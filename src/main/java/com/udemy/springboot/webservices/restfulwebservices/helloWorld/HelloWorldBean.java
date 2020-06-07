@@ -1,4 +1,4 @@
-package com.udemy.springboot.webservices.restfulwebservices;
+package com.udemy.springboot.webservices.restfulwebservices.helloWorld;
 
 public class HelloWorldBean {
 		
