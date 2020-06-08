@@ -6,6 +6,9 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.ServerProperties.Tomcat.Resource;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.hateoas.EntityModel;
+
+import org.springframework.hateoas.server.mvc.ControllerLinkBuilder;
+ 
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 
 @RestController
 public class UserResource {
@@ -30,7 +38,7 @@ public class UserResource {
 	
 	//fetch specific user
 	@GetMapping("/users/{userId}")
-	public User retriveUser(@PathVariable int userId)
+	public EntityModel<User> retriveUser(@PathVariable int userId)
 	{
 		User user = userDaoService.findUser(userId);
 		
@@ -39,7 +47,14 @@ public class UserResource {
 			throw new UserNotFoundException("USer Not Found for ID : "+userId);
 		}
 		
-		return user;
+		@SuppressWarnings("deprecation")
+		EntityModel<User> userModel = new EntityModel<>(user);
+		@SuppressWarnings("deprecation")
+		WebMvcLinkBuilder linkTo = WebMvcLinkBuilder
+									.linkTo(ControllerLinkBuilder.methodOn(this.getClass())
+									.retriveAllUsers());
+		userModel.add(linkTo.withRel("all-users"));
+		return userModel;
 	}
 	
 	//create new user by post request use @RequestBody annotation
