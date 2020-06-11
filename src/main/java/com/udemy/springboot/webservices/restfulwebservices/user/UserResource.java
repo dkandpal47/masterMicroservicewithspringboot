@@ -6,9 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.ServerProperties.Tomcat.Resource;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.hateoas.EntityModel;
-
 import org.springframework.hateoas.server.mvc.ControllerLinkBuilder;
- 
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 
+@SuppressWarnings("deprecation")
 @RestController
 public class UserResource {
 
@@ -47,9 +43,7 @@ public class UserResource {
 			throw new UserNotFoundException("USer Not Found for ID : "+userId);
 		}
 		
-		@SuppressWarnings("deprecation")
 		EntityModel<User> userModel = new EntityModel<>(user);
-		@SuppressWarnings("deprecation")
 		WebMvcLinkBuilder linkTo = WebMvcLinkBuilder
 									.linkTo(ControllerLinkBuilder.methodOn(this.getClass())
 									.retriveAllUsers());
